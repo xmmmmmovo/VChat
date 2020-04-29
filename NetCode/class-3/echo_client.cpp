@@ -5,11 +5,8 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <string>
 #include <sys/socket.h>
 #include <unistd.h>
-
-using std::string;
 
 constexpr int BUF_SIZE = 1024;
 
@@ -19,7 +16,7 @@ int main(int argc, char *argv[]) {
     int sock;
     sockaddr_in serv_addr{};
     int str_len = 0;
-    string message(BUF_SIZE, '\0');// 信息流
+    char message[BUF_SIZE];
 
     if (argc != 3) {
         printf("Usage : %s <IP> <port>\n", argv[0]);
@@ -46,16 +43,16 @@ int main(int argc, char *argv[]) {
 
     while (true) {
         fputs("Input message(Q/q to quit): ", stdout);
-        std::getline(message, BUF_SIZE);
+        std::fgets(message, BUF_SIZE, stdin);
 
-        if (!strcmp(message.c_str(), "q\n") || !strcmp(message.c_str(), "Q\n")) {
+        if (!strcmp(message, "q\n") || !strcmp(message, "Q\n")) {
             break;
         }
 
-        write(sock, message.c_str(), message.size());
-        str_len = read(sock, &message, BUF_SIZE - 1);
+        write(sock, message, strlen(message));
+        str_len = read(sock, message, BUF_SIZE - 1);
         message[str_len] = 0;
-        printf("Message from server: %s\n", message.c_str());
+        printf("Message from server: %s\n", message);
     }
 
 

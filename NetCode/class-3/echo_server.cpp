@@ -18,7 +18,7 @@ void error_handler(char *message);
 
 int main(int argc, char *argv[]) {
     int serv_sock, clnt_sock;
-    string message(BUF_SIZE, '\0');
+    char message[BUF_SIZE];
     sockaddr_in serv_addr{}, clnt_addr{};
     socklen_t clnt_addr_size;
     int str_len = 0;
@@ -46,7 +46,7 @@ int main(int argc, char *argv[]) {
         error_handler("listen() error");
     }
 
-    clnt_addr_size = sizeof(clnt_addr);
+    clnt_addr_size = sizeof(clnt_addr); // 算长度
 
     for (int i = 0; i < 5; ++i) {
         clnt_sock = accept(serv_sock, (sockaddr *) &clnt_addr, &clnt_addr_size);
@@ -56,8 +56,8 @@ int main(int argc, char *argv[]) {
             printf("Connected client %d \n", i + 1);
         }
 
-        while ((str_len = read(clnt_sock, &message, BUF_SIZE)) != 0) {
-            write(clnt_sock, message.c_str(), message.size());
+        while ((str_len = read(clnt_sock, message, BUF_SIZE)) != 0) {
+            write(clnt_sock, message, str_len);
         }
 
         close(clnt_sock);
