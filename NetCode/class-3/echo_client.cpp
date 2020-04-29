@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <iostream>
 #include <string>
 #include <sys/socket.h>
 #include <unistd.h>
@@ -14,6 +15,7 @@ using std::string;
 using std::to_string;
 
 constexpr int BUF_SIZE = 1024;
+constexpr int size_len = 4;
 
 void error_handler(char *messgae);
 
@@ -57,10 +59,12 @@ int main(int argc, char *argv[]) {
         int l = strlen(message);
         printf("len = %d\n", l);
         string s = to_string(l);
-        s.resize(4);
-        write(sock, s.c_str(), 4);
-        write(sock, message, strlen(message));
-        char buf[4];
+        s.resize(size_len + l, '\0');
+        for (int i = 0; i < l; ++i) {
+            s[size_len + i] = message[i];
+        }
+        write(sock, s.c_str(), s.size());
+        char buf[6];
         str_len = read(sock, buf, 4);
         str_len = read(sock, message, stoi(buf));
         message[str_len] = 0;

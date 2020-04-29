@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <iostream>
 #include <string>
 #include <sys/socket.h>
 #include <unistd.h>
@@ -62,10 +63,9 @@ int main(int argc, char *argv[]) {
 
 
         while (true) {
-            if ((str_len = read(clnt_sock, size_buf, size_len)) != 0) {
-                if ((str_len = read(clnt_sock, message, stoi(size_buf))) != 0) {
-                    write(clnt_sock, size_buf, size_len);
-                    write(clnt_sock, message, str_len);
+            if ((str_len = read(clnt_sock, message, size_len)) != 0) {
+                if ((str_len = read(clnt_sock, &message[str_len], stoi(message))) != 0) {
+                    write(clnt_sock, message, str_len + size_len);
                 } else {
                     break;
                 }

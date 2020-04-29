@@ -8,3 +8,6 @@ add_executable(TCPServer class1-2/Server.cpp)
 
 add_executable(EchoClient class-3/echo_client.cpp)
 add_executable(EchoServer class-3/echo_server.cpp)
+
+add_executable(UDPClient class-4/upd_client.cpp)
+add_executable(UDPServer class-4/udp_server.cpp)
