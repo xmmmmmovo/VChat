@@ -5,8 +5,13 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <string>
 #include <sys/socket.h>
 #include <unistd.h>
+
+using std::stoi;
+using std::string;
+using std::to_string;
 
 constexpr int BUF_SIZE = 1024;
 
@@ -49,8 +54,15 @@ int main(int argc, char *argv[]) {
             break;
         }
 
+        int l = strlen(message);
+        printf("len = %d\n", l);
+        string s = to_string(l);
+        s.resize(4);
+        write(sock, s.c_str(), 4);
         write(sock, message, strlen(message));
-        str_len = read(sock, message, BUF_SIZE - 1);
+        char buf[4];
+        str_len = read(sock, buf, 4);
+        str_len = read(sock, message, stoi(buf));
         message[str_len] = 0;
         printf("Message from server: %s\n", message);
     }
