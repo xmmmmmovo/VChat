@@ -20,13 +20,13 @@ constexpr int size_len = 4;
 void error_handler(char *messgae);
 
 int main(int argc, char *argv[]) {
-    int sock;
+    int         sock;
     sockaddr_in serv_addr{};
-    int str_len = 0;
-    char message[BUF_SIZE];
+    int         str_len = 0;
+    char        message[ BUF_SIZE ];
 
     if (argc != 3) {
-        printf("Usage : %s <IP> <port>\n", argv[0]);
+        printf("Usage : %s <IP> <port>\n", argv[ 0 ]);
         exit(1);
     }
 
@@ -39,8 +39,8 @@ int main(int argc, char *argv[]) {
     memset(&serv_addr, 0, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
     // 这里会自动将ip字符串转换为uint32_t类型IP数字
-    serv_addr.sin_addr.s_addr = inet_addr(argv[1]);
-    serv_addr.sin_port = htons(atoi(argv[2]));
+    serv_addr.sin_addr.s_addr = inet_addr(argv[ 1 ]);
+    serv_addr.sin_port        = htons(atoi(argv[ 2 ]));
 
     if (connect(sock, (sockaddr *) &serv_addr, sizeof(serv_addr)) == -1) {
         error_handler("connect() error!");
@@ -61,13 +61,13 @@ int main(int argc, char *argv[]) {
         string s = to_string(l);
         s.resize(size_len + l, '\0');
         for (int i = 0; i < l; ++i) {
-            s[size_len + i] = message[i];
+            s[ size_len + i ] = message[ i ];
         }
         write(sock, s.c_str(), s.size());
-        char buf[6];
-        str_len = read(sock, buf, 4);
-        str_len = read(sock, message, stoi(buf));
-        message[str_len] = 0;
+        char buf[ 6 ];
+        str_len            = read(sock, buf, 4);
+        str_len            = read(sock, message, stoi(buf));
+        message[ str_len ] = 0;
         printf("Message from server: %s\n", message);
     }
 

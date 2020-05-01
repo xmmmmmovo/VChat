@@ -14,15 +14,15 @@ using std::string;
 void error_handler(char *messgae);
 
 int main(int argc, char *argv[]) {
-    int sock;
+    int         sock;
     sockaddr_in serv_addr{};
-    int str_len = 0;
-    int idx = 0, read_len = 0;
-    string message;// 信息流
+    int         str_len = 0;
+    int         idx = 0, read_len = 0;
+    string      message;// 信息流
     message.resize(100, '\0');
 
     if (argc != 3) {
-        printf("Usage : %s <IP> <port>\n", argv[0]);
+        printf("Usage : %s <IP> <port>\n", argv[ 0 ]);
         exit(1);
     }
 
@@ -35,8 +35,8 @@ int main(int argc, char *argv[]) {
     memset(&serv_addr, 0, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
     // 这里会自动将ip字符串转换为uint32_t类型IP数字
-    serv_addr.sin_addr.s_addr = inet_addr(argv[1]);
-    serv_addr.sin_port = htons(atoi(argv[2]));
+    serv_addr.sin_addr.s_addr = inet_addr(argv[ 1 ]);
+    serv_addr.sin_port        = htons(atoi(argv[ 2 ]));
 
     if (connect(sock, (sockaddr *) &serv_addr, sizeof(serv_addr)) == -1) {
         error_handler("connect() error!");
@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
     bool check = false;
 
     // 每次只读出一个字节
-    while (read_len = read(sock, &message[idx++], 1)) {
+    while (read_len = read(sock, &message[ idx++ ], 1)) {
         if (str_len == -1) {
             if (check)
                 error_handler("read() error!");

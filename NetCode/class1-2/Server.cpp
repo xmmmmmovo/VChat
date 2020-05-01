@@ -19,12 +19,12 @@ int main(int argc, char *argv[]) {
 
     struct sockaddr_in serv_addr {};
     struct sockaddr_in clnt_addr {};
-    socklen_t clnt_addr_size;
+    socklen_t          clnt_addr_size;
 
     string message = "Hello World!";
 
     if (argc != 2) {
-        printf("Usage : %s <port>\n", argv[0]);
+        printf("Usage : %s <port>\n", argv[ 0 ]);
         exit(1);
     }
 
@@ -35,9 +35,9 @@ int main(int argc, char *argv[]) {
 
     memset(&serv_addr, 0, sizeof(serv_addr));// 初始化内存
 
-    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_family      = AF_INET;
     serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);// 当前主机ip
-    serv_addr.sin_port = htons(atoi(argv[1]));
+    serv_addr.sin_port        = htons(atoi(argv[ 1 ]));
     if (bind(serv_sock, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) == -1) {
         error_handler("bind() error");
     }
@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
     }
 
     clnt_addr_size = sizeof(clnt_addr);
-    clnt_sock = accept(serv_sock, (struct sockaddr *) &clnt_addr, &clnt_addr_size);
+    clnt_sock      = accept(serv_sock, (struct sockaddr *) &clnt_addr, &clnt_addr_size);
     if (clnt_sock == -1) {
         error_handler("accept() error");
     }

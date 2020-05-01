@@ -2,7 +2,6 @@
 BasedOnStyle: LLVM
 AccessModifierOffset: -4
 AlignAfterOpenBracket: Align
-AlignConsecutiveAssignments: false
 AlignOperands: true
 AllowAllArgumentsOnNextLine: false
 AllowAllConstructorInitializersOnNextLine: false
@@ -41,7 +40,6 @@ IndentPPDirectives: None
 IndentWidth: 4
 KeepEmptyLinesAtTheStartOfBlocks: true
 MaxEmptyLinesToKeep: 2
-NamespaceIndentation: All
 ObjCSpaceAfterProperty: false
 ObjCSpaceBeforeProtocolList: true
 PointerAlignment: Right
@@ -61,6 +59,10 @@ SpacesInAngles: false
 SpacesInCStyleCastParentheses: false
 SpacesInContainerLiterals: false
 SpacesInParentheses: false
-SpacesInSquareBrackets: false
 TabWidth: 4
 UseTab: Never
+SpacesInSquareBrackets:    true
+NamespaceIndentation:    Inner
+AlignConsecutiveAssignments:    true
+AlignConsecutiveDeclarations:    true
+AlignTrailingComments:    true
