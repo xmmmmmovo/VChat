@@ -43,11 +43,35 @@ int main(int argc, char *argv[]) {
 
     while (true) {
         clnt_addr_size = sizeof(clnt_addr);
-        str_len        = recvfrom(serv_sock, message, BUF_SIZE, 0,
+        str_len        = recvfrom(serv_sock, message, 2, 0,
                            (sockaddr *) &clnt_addr, &clnt_addr_size);
-        printf("msg: %s\n", message);
-        sendto(serv_sock, message, str_len, 0,
-               (sockaddr *) &clnt_addr, clnt_addr_size);
+        if (message[ 0 ] == '1') {
+            str_len = recvfrom(serv_sock, message + 2, (int) message[ 2 ], 0,
+                               (sockaddr *) &clnt_addr, &clnt_addr_size);
+            sendto(serv_sock, message, str_len + 2, 0,
+                   (sockaddr *) &clnt_addr, clnt_addr_size);
+            message[ str_len + 2 ] = 0;
+        } else if (message[ 0 ] == '0') {
+            sendto(serv_sock, message, 2, 0,
+                   (sockaddr *) &clnt_addr, clnt_addr_size);
+            int n   = (int) message[ 1 ];
+            int idx = 0;
+            for (int i = 0; i < n; ++i) {
+                str_len = recvfrom(serv_sock, message, 3, 0,
+                                   (sockaddr *) &clnt_addr, &clnt_addr_size);
+                str_len = recvfrom(serv_sock, &message[ idx ], (int) message[ 2 ], 0,
+                                   (sockaddr *) &clnt_addr, &clnt_addr_size);
+                idx += str_len;
+            }
+        } else if (message[ 0 ] == '2') {
+            str_len = recvfrom(serv_sock, &message[ 2 ], 1, 0,
+                               (sockaddr *) &clnt_addr, &clnt_addr_size);
+            {
+                char tp[ (int) message[ 2 ] ];
+                str_len = recvfrom(serv_sock, tp, (int) message[ 2 ], 0,
+                                   (sockaddr *) &clnt_addr, &clnt_addr_size);
+            }
+        }
     }
 
     close(serv_sock);
