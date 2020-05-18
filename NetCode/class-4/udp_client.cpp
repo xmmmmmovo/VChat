@@ -11,6 +11,7 @@
 #include <unistd.h>
 
 constexpr int BUF_SIZE = 256;
+//constexpr int BUF_SIZE = 10;
 
 void error_handler(char *message);
 
@@ -75,34 +76,45 @@ int main(int argc, char *argv[]) {
     int  sl = 0;
     while (true) {
         fgets(buf + 3, sizeof(buf) - 3, stdin);
-        sl = strlen(buf + 3);
+        sl = strlen(buf + 3) - 1;
         printf("str len = %d\n", sl);
-        if (sl < 253) {
+        if (sl < BUF_SIZE - 3) {
             buf[ 1 ]     = (char) 1;
             buf[ 2 ]     = (char) sl;
             int send_len = sock.sendto(addr, buf + 1, sl + 2);
             printf("send len = %d\n", send_len);
         } else {
             int pack_num = ceil((double) sl / (BUF_SIZE - 3));
-            buf[ 0 ]     = (char) 0;
-            buf[ 1 ]     = (char) pack_num;
+            buf[ 0 ] = (char) 0;
+            buf[ 1 ] = (char) pack_num;
             sock.sendto(addr, buf, 2);
             int st = 0;
             for (int i = 0; i < pack_num; ++i) {
-                st = i * BUF_SIZE;
-                
+                st            = i * (BUF_SIZE - 3);
+                buf[ st ]     = (char) 2;
+                buf[ st + 1 ] = (char) (i + 1);
+                buf[ st + 2 ] = i == pack_num - 1 ? strlen(buf + st + 3) : BUF_SIZE - 3;
+                sock.sendto(addr, buf + st, BUF_SIZE);
             }
         }
 
 
         int recv_len = sock.recvfrom(addr, buf, BUF_SIZE);
-        printf("recv len = %d\n", recv_len);
         buf[ recv_len ] = 0;
 
         if (buf[ 0 ] == 1) {
-            printf("Message from server: %s\n", buf);
+            printf("Message from server: %s\n", buf + 2);
         } else if (buf[ 0 ] == 0) {
             // 数据包获取
+            int  pack_num = (int) buf[ 1 ];
+            int  cnt      = 0;
+            char pc_buf[ BUF_SIZE ];
+            for (int i = 0; i < pack_num; ++i) {
+                recv_len = sock.recvfrom(addr, pc_buf, BUF_SIZE);
+                std::copy(pc_buf + 3, pc_buf + recv_len, buf + cnt);
+                cnt += (int) pc_buf[ 2 ];
+            }
+            printf("Message from server: %s\n", buf);
         }
     }
 

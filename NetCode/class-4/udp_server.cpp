@@ -9,6 +9,7 @@
 #include <unistd.h>
 
 constexpr int BUF_SIZE = 256;
+//constexpr int BUF_SIZE = 10;
 
 void error_handler(char *message);
 
