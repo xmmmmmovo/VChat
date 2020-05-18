@@ -2,12 +2,15 @@
 // Created by xmmmmmovo on 2020/4/29.
 //
 #include <arpa/inet.h>
+#include <cmath>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <string>
 #include <sys/socket.h>
 #include <unistd.h>
+
+constexpr int BUF_SIZE = 256;
 
 void error_handler(char *message);
 
@@ -31,7 +34,7 @@ public:
     }
 
 private:
-    struct sockaddr_in addr_{};
+    struct sockaddr_in addr_ {};
 };
 
 class Socket {
@@ -68,15 +71,39 @@ int main(int argc, char *argv[]) {
 
     InetAddress addr(argv[ 2 ], argv[ 1 ]);
 
-    char buf[ 256 ];
+    char buf[ 1024 ];
+    int  sl = 0;
     while (true) {
-        fgets(buf, sizeof(buf), stdin);
-        int sendLen = sock.sendto(addr, buf, sizeof(buf));
-        int recvLen = sock.recvfrom(addr, buf, sizeof(buf) - 1);
-        printf("recvLen = %d\n", recvLen);
+        fgets(buf + 3, sizeof(buf) - 3, stdin);
+        sl = strlen(buf + 3);
+        printf("str len = %d\n", sl);
+        if (sl < 253) {
+            buf[ 1 ]     = (char) 1;
+            buf[ 2 ]     = (char) sl;
+            int send_len = sock.sendto(addr, buf + 1, sl + 2);
+            printf("send len = %d\n", send_len);
+        } else {
+            int pack_num = ceil((double) sl / (BUF_SIZE - 3));
+            buf[ 0 ]     = (char) 0;
+            buf[ 1 ]     = (char) pack_num;
+            sock.sendto(addr, buf, 2);
+            int st = 0;
+            for (int i = 0; i < pack_num; ++i) {
+                st = i * BUF_SIZE;
+                
+            }
+        }
 
-        buf[ recvLen ] = 0;
-        printf("Message from server: %s", buf);
+
+        int recv_len = sock.recvfrom(addr, buf, BUF_SIZE);
+        printf("recv len = %d\n", recv_len);
+        buf[ recv_len ] = 0;
+
+        if (buf[ 0 ] == 1) {
+            printf("Message from server: %s\n", buf);
+        } else if (buf[ 0 ] == 0) {
+            // 数据包获取
+        }
     }
 
     return 0;
