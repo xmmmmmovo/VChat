@@ -11,3 +11,4 @@ add_executable(EchoServer class-3/echo_server.cpp)
 
 add_executable(UDPClient class-4/udp_client.cpp)
 add_executable(UDPServer class-4/udp_server.cpp)
+add_executable(udp_server class-4/udp_server.cpp)
