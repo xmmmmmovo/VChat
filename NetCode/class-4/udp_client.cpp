@@ -85,8 +85,8 @@ int main(int argc, char *argv[]) {
             printf("send len = %d\n", send_len);
         } else {
             int pack_num = ceil((double) sl / (BUF_SIZE - 3));
-            buf[ 0 ] = (char) 0;
-            buf[ 1 ] = (char) pack_num;
+            buf[ 0 ]     = (char) 0;
+            buf[ 1 ]     = (char) pack_num;
             sock.sendto(addr, buf, 2);
             int st = 0;
             for (int i = 0; i < pack_num; ++i) {
@@ -99,7 +99,7 @@ int main(int argc, char *argv[]) {
         }
 
 
-        int recv_len = sock.recvfrom(addr, buf, BUF_SIZE);
+        int recv_len    = sock.recvfrom(addr, buf, BUF_SIZE);
         buf[ recv_len ] = 0;
 
         if (buf[ 0 ] == 1) {
