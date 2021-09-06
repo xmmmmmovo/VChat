@@ -1,0 +1,11 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 100,
+            "driver": "SQLite",
+            "database": "${workspaceFolder:server}/store/database.sqlite3",
+            "name": "socket_final_project"
+        }
+    ],
+    "sqltools.useNodeRuntime": true
+}

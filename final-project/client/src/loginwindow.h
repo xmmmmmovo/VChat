@@ -4,18 +4,24 @@
 #include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class LoginWindow; }
+namespace Ui {
+class LoginWindow;
+}
 QT_END_NAMESPACE
 
-class LoginWindow : public QMainWindow
-{
+class LoginWindow : public QMainWindow {
     Q_OBJECT
 
 public:
     LoginWindow(QWidget *parent = nullptr);
     ~LoginWindow();
 
+private slots:
+    void on_login_btn_clicked();
+
+    void on_register_btn_clicked();
+
 private:
     Ui::LoginWindow *ui;
 };
-#endif // LOGINWINDOW_H
+#endif// LOGINWINDOW_H

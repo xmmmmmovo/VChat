@@ -1,6 +1,6 @@
 /**
  * @file logger.hpp
- * @author xmmmmmovo (lolicoin@foxmail.com)
+ * @author xmmmmmovo (13256172360@163.com)
  * @brief 
  * @version 0.1
  * @date 2021-08-29
@@ -13,11 +13,12 @@
 
 #include "core.hpp"
 #include <string>
+namespace server {
 #define LOG_STRINGMAX 4096
 
 #define LOG(level, fmt, ...)                                                   \
     do {                                                                       \
-        if (_curPDLevel >= level) {                                            \
+        if (server::_curPDLevel >= level) {                                            \
             log(level, __func__, __FILE__, __LINE__, fmt, ##__VA_ARGS__);      \
         }                                                                      \
     } while (0)
@@ -39,13 +40,17 @@
 
 enum LEVEL { SEVERE = 0, ERROR, EVENT, WARNING, INFO, DEBUG };
 
-extern LEVEL _curPDLevel;
-const char * getPDLevelDesp(LEVEL level);
+const char *getPDLevelDesp(LEVEL level);
 
+extern LEVEL _curPDLevel;
 #define DFT_DIAGLEVEL WARNING
+
 void log(LEVEL level, const char *func, const char *file, unsigned int line,
          const char *format, ...);
 void log(LEVEL level, const char *func, const char *file, unsigned int line,
          std::string message);
+
+void set_cur_level(LEVEL level);
+}// namespace server
 
 #endif// LOGGER_HPP
