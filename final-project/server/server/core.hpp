@@ -34,12 +34,13 @@
 
 #include <iostream>
 #include <map>
+#include <queue>
 #include <set>
 #include <string>
+#include <tuple>
+#include <unordered_map>
 #include <vector>
 
-namespace server {
-namespace core {
 
 #define OSS_MAX_PATHSIZE PATH_MAX
 #define OSS_FILE_SEP_STR "/"
@@ -63,6 +64,36 @@ namespace core {
 #define HEADER_INVALID -15
 #define IXM_ID_NOT_EXIST -16
 #define NO_ID -17
+
+namespace server {
+namespace core {
+
+
+    struct noncopyable {
+    protected:
+        noncopyable()          = default;
+        virtual ~noncopyable() = default;
+
+        noncopyable(const noncopyable &) = delete;
+        noncopyable &operator=(const noncopyable &) = delete;
+    };
+
+    class noncopyable {
+    protected:
+        noncopyable()          = default;
+        virtual ~noncopyable() = default;
+
+        noncopyable(const noncopyable &) = delete;
+        noncopyable &operator=(const noncopyable &) = delete;
+    };
+
+    struct defer : private noncopyable {
+        ~defer() { _func(); }
+        defer(std::function<void()> &&func) { _func = func; }
+
+    private:
+        std::function<void()> _func;
+    };
 
 }// namespace core
 }// namespace server

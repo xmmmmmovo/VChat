@@ -13,8 +13,6 @@
 
 #include "core.hpp"
 
-namespace server {
-namespace net {
 #define SOCKET_GETLASTERROR errno
 
 // by default 10ms timeout
@@ -23,6 +21,10 @@ namespace net {
 // max hostname
 #define OSS_MAX_HOSTNAME NI_MAXHOST
 #define OSS_MAX_SERVICENAME NI_MAXSERV
+
+namespace server {
+namespace net {
+
 
 class Socket {
 private:

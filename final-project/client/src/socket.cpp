@@ -1,6 +1,4 @@
 #include "socket.h"
+#include <sys/socket.h>
 
-Socket::Socket()
-{
-
-}
+client::Socket::Socket() {}

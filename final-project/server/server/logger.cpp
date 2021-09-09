@@ -14,7 +14,7 @@ namespace server {
 const static char *PDLEVELSTRING[] = {"SEVERE",  "ERROR", "EVENT",
                                       "WARNING", "INFO",  "DEBUG"};
 
-const char *getPDLevelDesp(LEVEL level) {
+const char *get_PD_level_desp(LEVEL level) {
     if ((unsigned int) level > (unsigned int) DEBUG) { return "Unknow Level"; }
     return PDLEVELSTRING[(unsigned int) level];
 }

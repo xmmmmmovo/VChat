@@ -40,7 +40,7 @@ namespace server {
 
 enum LEVEL { SEVERE = 0, ERROR, EVENT, WARNING, INFO, DEBUG };
 
-const char *getPDLevelDesp(LEVEL level);
+const char *get_PD_level_desp(LEVEL level);
 
 extern LEVEL _curPDLevel;
 #define DFT_DIAGLEVEL WARNING

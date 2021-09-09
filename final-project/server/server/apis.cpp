@@ -9,3 +9,5 @@
  * 
  */
 #include "apis.hpp"
+
+namespace server {}

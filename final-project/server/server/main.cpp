@@ -13,6 +13,7 @@
 #include "logger.hpp"
 
 namespace server {
+
 void bootsrap() {
     int rc = OK;
     if ((rc = initdb("../store/database.sqlite3")) != OK) goto err;
@@ -21,7 +22,7 @@ err:
 }
 
 void shutdown(int sig) {
-    if (sig == SIGCHLD) {}
+    if (sig == SIGINT) {}
     return;
 }
 }// namespace server
@@ -30,7 +31,7 @@ void shutdown(int sig) {
 int main(int argc, char *argv[]) {
     server::set_cur_level(server::DEBUG);
     server::bootsrap();
-    signal(SIGCHLD, server::shutdown);
+    signal(SIGINT, server::shutdown);
 
     return 0;
 }
