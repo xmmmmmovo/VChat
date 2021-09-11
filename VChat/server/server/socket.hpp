@@ -22,21 +22,17 @@
 #define OSS_MAX_HOSTNAME NI_MAXHOST
 #define OSS_MAX_SERVICENAME NI_MAXSERV
 
-namespace server {
-namespace net {
-
-
+namespace server::net {
 class Socket {
-private:
+protected:
     int         _fd;
-    socklen_t   _addressLen;
-    socklen_t   _peerAddressLen;
-    sockaddr_in _sockAddress;
-    sockaddr_in _peerAddress;
+    socklen_t   _address_len;
+    socklen_t   _peer_address_len;
+    sockaddr_in _sock_address;
+    sockaddr_in _peer_address;
     bool        _init;
     int         _timeout;
 
-protected:
     unsigned int _getPort(sockaddr_in *addr);
     int _getAddress(sockaddr_in *addr, char *pAddress, unsigned int length);
 
@@ -45,19 +41,19 @@ public:
     void setAddress(const char *pHostname, unsigned int port);
     // create a listening socket
     Socket();
-    Socket(unsigned int port, int timeout = 0);
+    explicit Socket(unsigned int port, int timeout = 0);
     // create a connection socket
     Socket(const char *pHostname, unsigned int port, int timeout = 0);
     // create from a existing socket
-    Socket(int *sock, int timeout = 0);
+    explicit Socket(int *sock, int timeout = 0);
     ~Socket() { close(); }
-    int  initSocket();
-    int  bind_listen();
-    bool isConnected();
-    int  send(const char *pMsg, int len,
-                int timeout = OSS_SOCKET_DFT_TIMEOUT, int flags = 0);
+    virtual int initSocket() = 0;
+    int         bind_listen();
+    bool        isConnected();
+    int  send(const char *pMsg, int len, int timeout = OSS_SOCKET_DFT_TIMEOUT,
+              int flags = 0);
     int  recv(char *pMsg, int len, int timeout = OSS_SOCKET_DFT_TIMEOUT,
-                int flags = 0);
+              int flags = 0);
     int  recvNF(char *pMsg, int len, int timeout = OSS_SOCKET_DFT_TIMEOUT);
     int  connect();
     void close();
@@ -72,6 +68,5 @@ public:
     static int   getHostName(char *pName, int nameLen);
     static int   getPort(const char *pServiceName, unsigned short &port);
 };
-}// namespace net
-}// namespace server
+}// namespace server::net
 #endif// SOCKET_HPP

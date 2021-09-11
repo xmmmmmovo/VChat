@@ -34,7 +34,7 @@ namespace server {
 
 #define RC_CHECK(rc, level, fmt, ...)                                          \
     do {                                                                       \
-        CHECK((EDB_OK == (rc)), (rc), error, (level), fmt, ##__VA_ARGS__);     \
+        CHECK((OK == (rc)), (rc), error, (level), fmt, ##__VA_ARGS__);     \
     } while (0)
 
 

@@ -9,8 +9,6 @@
  * 
  */
 #include "utils.hpp"
-#include <iomanip>
-#include <sstream>
 
 namespace server {
 namespace utils {
@@ -32,8 +30,8 @@ namespace utils {
     int64_t steady_milli() { return steady_micro() / 1000; }
 
     std::string readable_time(time_t t) {
-        auto               t  = std::time(nullptr);
-        auto               tm = *std::localtime(&t);
+        auto               tt  = std::time(nullptr);
+        auto               tm = *std::localtime(&tt);
         std::ostringstream oss;
         oss << std::put_time(&tm, "%d-%m-%Y %H-%M-%S");
         return oss.str();

@@ -1,3 +1,19 @@
-# SocketProgrammingCourseRepo
-网络编程课程相关代码
+# VChat
+一个聊天软件
+
+### 设计思路
+
+#### 服务端
+
+- 协议选择
+
+使用tcp协议传输，后期可能选择udp + fallback tcp
+
+- 
+
+
+
+#### 客户端
+
+QT嗯造就完事儿了
 

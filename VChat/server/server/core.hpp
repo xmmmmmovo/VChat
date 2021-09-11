@@ -13,6 +13,7 @@
 
 #include <arpa/inet.h>
 #include <cerrno>
+#include <climits>
 #include <csignal>
 #include <cstdarg>
 #include <cstdio>
@@ -20,10 +21,11 @@
 #include <cstring>
 #include <ctime>
 #include <fcntl.h>
-#include <limits.h>
+#include <iomanip>
 #include <netdb.h>
 #include <netinet/in.h>
 #include <netinet/tcp.h>
+#include <sstream>
 #include <sys/mman.h>
 #include <sys/socket.h>
 #include <sys/stat.h>
@@ -41,6 +43,7 @@
 #include <unordered_map>
 #include <vector>
 
+#include "thread.hpp"
 
 #define OSS_MAX_PATHSIZE PATH_MAX
 #define OSS_FILE_SEP_STR "/"
@@ -65,37 +68,27 @@
 #define IXM_ID_NOT_EXIST -16
 #define NO_ID -17
 
-namespace server {
-namespace core {
+namespace server::core {
 
+class noncopyable {
+protected:
+    noncopyable()          = default;
+    virtual ~noncopyable() = default;
 
-    struct noncopyable {
-    protected:
-        noncopyable()          = default;
-        virtual ~noncopyable() = default;
+public:
+    noncopyable(const noncopyable &) = delete;
+    noncopyable &operator=(const noncopyable &) = delete;
+};
 
-        noncopyable(const noncopyable &) = delete;
-        noncopyable &operator=(const noncopyable &) = delete;
-    };
+class defer : private noncopyable {
+public:
+    ~defer() override { _func(); }
+    explicit defer(std::function<void()> &&func) { _func = func; }
 
-    class noncopyable {
-    protected:
-        noncopyable()          = default;
-        virtual ~noncopyable() = default;
+private:
+    std::function<void()> _func;
+};
 
-        noncopyable(const noncopyable &) = delete;
-        noncopyable &operator=(const noncopyable &) = delete;
-    };
-
-    struct defer : private noncopyable {
-        ~defer() { _func(); }
-        defer(std::function<void()> &&func) { _func = func; }
-
-    private:
-        std::function<void()> _func;
-    };
-
-}// namespace core
-}// namespace server
+}// namespace server::core
 
 #endif// CORE_HPP

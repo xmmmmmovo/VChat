@@ -16,7 +16,7 @@ namespace server {
 
 void bootsrap() {
     int rc = OK;
-    if ((rc = initdb("../store/database.sqlite3")) != OK) goto err;
+    if ((rc = db::initdb("../store/database.sqlite3")) != OK) goto err;
 err:
     exit(rc);
 }
@@ -27,7 +27,12 @@ void shutdown(int sig) {
 }
 }// namespace server
 
-
+/**
+ * @brief 主函数
+ * @param argc
+ * @param argv
+ * @return
+ */
 int main(int argc, char *argv[]) {
     server::set_cur_level(server::DEBUG);
     server::bootsrap();

@@ -23,7 +23,7 @@ const static char *LOG_STR_FORMAT =
         "%04d-%02d-%02d-%02d.%02d.%02d.%06d"
         "\tLevel:%s\t"
         "Function:%-8sLine:%d" OSS_NEWLINE "File:%s" OSS_NEWLINE
-        "Message:" OSS_NEWLINE "%s" OSS_NEWLINE;
+        "Message: %s" OSS_NEWLINE;
 
 LEVEL _curPDLevel = DFT_DIAGLEVEL;
 

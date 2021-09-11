@@ -11,6 +11,8 @@
 #ifndef APIS_HPP
 #define APIS_HPP
 
+#include "core.hpp"
+
 namespace api {
 
 void login();

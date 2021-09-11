@@ -11,6 +11,10 @@
 #ifndef DB_HPP
 #define DB_HPP
 
-int initdb(const char *filepath);
+namespace server {
+namespace db {
+    int initdb(const char *filepath);
+}
+}// namespace server
 
 #endif// DB_HPP
