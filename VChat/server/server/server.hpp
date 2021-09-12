@@ -6,19 +6,23 @@
 #define SERVER_SERVER_HPP
 
 #include "core.hpp"
+#include "tcp.hpp"
+#include "thread.hpp"
 
 namespace server::core {
 class AsyncServer : private noncopyable {
     using server_shared_ptr = std::shared_ptr<AsyncServer>;
+    using tcp_shared_ptr    = std::shared_ptr<net::TCPSocket>;
+
     static server_shared_ptr startServer(const std::string &host,
                                          unsigned short     port);
-    AsyncServer() {}
+    AsyncServer() = default;
     void exit() {
-        threadPool_.exit();
-        threadPool_.join();
+        //        threadPool_.exit();
+        //        threadPool_.join();
     }
-    server_shared_ptr _server;
-    ThreadPool        _thread_pool;
+    tcp_shared_ptr _server;
+    ThreadPool     _thread_pool;
 };
 }// namespace server::core
 

@@ -17,10 +17,7 @@ Socket::Socket() {
     _init    = false;
     _fd      = 0;
     _timeout = 0;
-    memset(&_sock_address, 0, sizeof(sockaddr_in));
-    memset(&_peer_address, 0, sizeof(sockaddr_in));
-    _peer_address_len = sizeof(_peer_address);
-    _address_len      = sizeof(_sock_address);
+    initaddress();
 }
 
 Socket::Socket(unsigned int port, int timeout) : Socket() {
@@ -39,14 +36,12 @@ Socket::Socket(const char *pHostname, unsigned int port, int timeout)
         _sock_address.sin_addr.s_addr = inet_addr(pHostname);
 }
 
-Socket::Socket(int *sock, int timeout) {
-    int rc       = OK;
-    _fd          = *sock;
-    _init        = true;
-    _timeout     = timeout;
-    _address_len = sizeof(_sock_address);
-    memset(&_peer_address, 0, sizeof(sockaddr_in));
-    _peer_address_len = sizeof(_peer_address);
+Socket::Socket(const int *sock, int timeout) {
+    int rc   = OK;
+    _fd      = *sock;
+    _init    = true;
+    _timeout = timeout;
+    initaddress();
     rc = getsockname(_fd, (sockaddr *) &_sock_address, &_address_len);
     if (rc) {
         LOG(ERROR, "Failed to get sock name, error = %d", SOCKET_GETLASTERROR);
@@ -61,18 +56,46 @@ done:
 error:
     goto done;
 }
-int Socket::setSocketLi(int lOnOff, int linger) { return 0; }
 
-void Socket::setAddress(const char *pHostname, unsigned int port) {}
+int Socket::setSocketLi(int lOnOff, int linger) const {
+    int           rc = OK;
+    struct linger _linger {
+        .l_onoff = lOnOff, .l_linger = linger
+    };
+    rc = setsockopt(_fd, SOL_SOCKET, SO_LINGER, (const void *) &_linger,
+                    sizeof _linger);
+    return rc;
+}
+
+void Socket::setAddress(const char *pHostname, unsigned int port) {
+    hostent *hp;
+    initaddress();
+    _peer_address.sin_family = AF_INET;
+    if ((hp = gethostbyname(pHostname))) {
+        _sock_address.sin_addr.s_addr = *((int *) hp->h_addr_list[0]);
+    } else {
+        _sock_address.sin_addr.s_addr = inet_addr(pHostname);
+    }
+    _sock_address.sin_port = htons(port);
+    _address_len           = sizeof _sock_address;
+}
 
 void Socket::close() {
     if (_init) {
         int i = 0;
         i     = ::close(_fd);
-        if (i < 0) { i = -1; }
+        if (i < 0) {
+            LOG(ERROR, "关闭错误！");
+            i = -1;
+        }
         _init = false;
     }
 }
 
-
+void Socket::initaddress() {
+    memset(&_sock_address, 0, sizeof(sockaddr_in));
+    memset(&_peer_address, 0, sizeof(sockaddr_in));
+    _peer_address_len = sizeof(_peer_address);
+    _address_len      = sizeof(_sock_address);
+}
 }// namespace server::net

@@ -43,8 +43,6 @@
 #include <unordered_map>
 #include <vector>
 
-#include "thread.hpp"
-
 #define OSS_MAX_PATHSIZE PATH_MAX
 #define OSS_FILE_SEP_STR "/"
 #define OSS_FILE_SEP_CHAR *((const char *) OSS_FILE_SEP_STR)[0]

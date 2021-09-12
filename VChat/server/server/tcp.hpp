@@ -10,7 +10,7 @@
 
 namespace server::net {
 class TCPSocket : public Socket, private core::noncopyable {
-
+    int init_socket() override;
 };
 }// namespace server::net
 

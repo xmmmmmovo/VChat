@@ -18,7 +18,7 @@ namespace server {
 
 #define LOG(level, fmt, ...)                                                   \
     do {                                                                       \
-        if (server::_curPDLevel >= level) {                                            \
+        if (server::_curPDLevel >= level) {                                    \
             log(level, __func__, __FILE__, __LINE__, fmt, ##__VA_ARGS__);      \
         }                                                                      \
     } while (0)
@@ -32,9 +32,9 @@ namespace server {
         }                                                                      \
     } while (0)
 
-#define RC_CHECK(rc, level, fmt, ...)                                          \
+#define RC_CHECK(rc, level, fmt, ...)                                   \
     do {                                                                       \
-        CHECK((OK == (rc)), (rc), error, (level), fmt, ##__VA_ARGS__);     \
+        CHECK((OK == (rc)), (rc), error, (level), fmt, ##__VA_ARGS__);         \
     } while (0)
 
 
