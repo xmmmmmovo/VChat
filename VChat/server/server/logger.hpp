@@ -13,6 +13,7 @@
 
 #include "core.hpp"
 #include <string>
+
 namespace server {
 #define LOG_STRINGMAX 4096
 

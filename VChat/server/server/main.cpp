@@ -11,19 +11,28 @@
 #include "core.hpp"
 #include "db.hpp"
 #include "logger.hpp"
+#include "server.hpp"
 
 namespace server {
 
+core::server_shared_ptr server = nullptr;
+
 void bootsrap() {
     int rc = OK;
-    if ((rc = db::initdb("../store/database.sqlite3")) != OK) goto err;
-err:
+    rc     = db::initdb("../store/database.sqlite3");
+    RC_CHECK(rc, ERROR, "数据库初始化错误！");
+    server = core::AsyncServer::startServer("127.0.0.1", 12345);
+    if (server == nullptr) {
+        LOG(ERROR, "服务器初始化错误！");
+        goto error;
+    }
+    return;
+error:
     exit(rc);
 }
 
 void shutdown(int sig) {
-    if (sig == SIGINT) {}
-    return;
+    if (sig == SIGINT) { LOG(INFO, "收到信号！正在关闭服务器......"); }
 }
 }// namespace server
 

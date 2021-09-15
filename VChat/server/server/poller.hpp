@@ -5,6 +5,13 @@
 #ifndef SERVER_POLLER_HPP
 #define SERVER_POLLER_HPP
 
-namespace server::io {}
+#include "core.hpp"
+
+namespace server::io {
+class PollerInterface : private core::noncopyable {
+    int64_t _id;
+    int     last_active_poll;
+};
+}// namespace server::io
 
 #endif//SERVER_POLLER_HPP
