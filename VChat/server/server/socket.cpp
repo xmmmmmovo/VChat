@@ -1,13 +1,21 @@
-/**
- * @file socket.cpp
- * @author xmmmmmovo (13256172360@163.com)
- * @brief 
- * @version 0.1
- * @date 2021-08-29
- * 
- * @copyright Copyright (c) 2021
- * 
- */
+//
+// Created by xmmmmmovo on 2021/9/15.
+//
+
 #include "socket.hpp"
-#include "logger.hpp"
-namespace server::net {}// namespace server::net
+
+namespace server::net {
+
+int set_reuse_address(int fd, bool val) {
+    return setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &val, sizeof(val));
+}
+
+int set_reuse_port(int fd, int val) {
+#ifndef SO_REUSEPORT
+    return OK;
+#else
+    return setsockopt(fd, SOL_SOCKET, SO_REUSEPORT, &val, sizeof(val));
+#endif
+}
+
+}// namespace server::net

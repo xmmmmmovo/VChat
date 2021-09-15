@@ -21,7 +21,7 @@ void bootsrap() {
     int rc = OK;
     rc     = db::initdb("../store/database.sqlite3");
     RC_CHECK(rc, ERROR, "数据库初始化错误！");
-    server = core::AsyncServer::startServer("127.0.0.1", 12345);
+    server = core::AsyncServer::start_server("127.0.0.1", 12345);
     if (server == nullptr) {
         LOG(ERROR, "服务器初始化错误！");
         goto error;
@@ -30,6 +30,8 @@ void bootsrap() {
 error:
     exit(rc);
 }
+
+void wait() {}
 
 void shutdown(int sig) {
     if (sig == SIGINT) { LOG(INFO, "收到信号！正在关闭服务器......"); }
@@ -46,6 +48,6 @@ int main(int argc, char *argv[]) {
     server::set_cur_level(server::DEBUG);
     server::bootsrap();
     signal(SIGINT, server::shutdown);
-
+    server::wait();
     return 0;
 }
