@@ -1,9 +1,18 @@
 {
-    "files.associations": {
-        "chrono": "cpp",
-        "iosfwd": "cpp",
-        "unordered_map": "cpp",
-        "functional": "cpp",
-        "type_traits": "cpp"
-    }
+  "files.associations": {
+    "chrono": "cpp",
+    "iosfwd": "cpp",
+    "unordered_map": "cpp",
+    "functional": "cpp",
+    "type_traits": "cpp"
+  },
+  "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true
+  }
 }

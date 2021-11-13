@@ -13,8 +13,9 @@
 namespace server::io {
 
 #ifdef __linux__
+class EpollPoller : public IPoller {};
 #elif __APPLE__
-class KqueuePoller : public PollerInterface {
+class KqueuePoller : public IPoller {
     int _fd;
 };
 #endif

@@ -47,11 +47,6 @@ namespace utils {
         return ne == (char **) &e ? v : -1;
     }
     int64_t atoi(const char *b) { return atoi(b, b + strlen(b)); }
-    
-    int     add_fd_flag(int fd, int flag) {
-        int ret = fcntl(fd, F_GETFD);
-        return fcntl(fd, F_SETFD, ret | flag);
-    }
 
 }// namespace utils
 }// namespace server

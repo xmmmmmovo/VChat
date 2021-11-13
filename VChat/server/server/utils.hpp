@@ -24,7 +24,6 @@ namespace utils {
     int64_t     atoi(const char *b, const char *e);
     int64_t     atoi2(const char *b, const char *e);
     int64_t     atoi(const char *b);
-    int         add_fd_flag(int fd, int flag);
 }// namespace utils
 }// namespace server
 

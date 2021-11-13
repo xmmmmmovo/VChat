@@ -3,3 +3,5 @@
 //
 
 #include "codec.hpp"
+
+namespace server {}// namespace server

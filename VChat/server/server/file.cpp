@@ -14,6 +14,7 @@
 
 namespace server::io {
 using namespace std;
+
 tuple<int, string &&> get_content(const string &filename) {
     string content;
     int    fd = open(filename.c_str(), O_RDONLY);

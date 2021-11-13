@@ -22,13 +22,13 @@ namespace core {
     using namespace std;
     class ThreadPool : private noncopyable {
     public:
-        ThreadPool();
-        ~ThreadPool();
+        ThreadPool(){};
+        ~ThreadPool(){};
         void start();
 
     private:
         sync::Queue<int> _tasks;
-        vector<thread>   _threads;
+        // vector<thread>   _threads;
     };
 }// namespace core
 }// namespace server

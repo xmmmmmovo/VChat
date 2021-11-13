@@ -17,6 +17,10 @@ namespace server {
 
 core::server_shared_ptr server = nullptr;
 
+/**
+ * @brief 启动函数
+ * 
+ */
 void bootsrap() {
     int rc = OK;
     rc     = db::initdb("../store/database.sqlite3");
@@ -31,8 +35,17 @@ error:
     exit(rc);
 }
 
+/**
+ * @brief 阻塞函数
+ * 
+ */
 void wait() {}
 
+/**
+ * @brief 关闭函数
+ * 
+ * @param sig 
+ */
 void shutdown(int sig) {
     if (sig == SIGINT) { LOG(INFO, "收到信号！正在关闭服务器......"); }
 }
@@ -45,8 +58,11 @@ void shutdown(int sig) {
  * @return
  */
 int main(int argc, char *argv[]) {
+    // 设置log
     server::set_cur_level(server::DEBUG);
+    // 启动服务器
     server::bootsrap();
+    // 设定关闭服务器
     signal(SIGINT, server::shutdown);
     server::wait();
     return 0;

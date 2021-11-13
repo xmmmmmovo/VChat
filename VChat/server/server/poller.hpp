@@ -8,7 +8,7 @@
 #include "core.hpp"
 
 namespace server::io {
-class PollerInterface : private core::noncopyable {
+class IPoller : private core::noncopyable {
     int64_t _id;
     int     last_active_poll;
 };

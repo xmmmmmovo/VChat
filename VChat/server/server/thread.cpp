@@ -13,7 +13,6 @@
 namespace server {
 namespace sync {
     using namespace std;
-
 }// namespace sync
 
 namespace core {}// namespace core
